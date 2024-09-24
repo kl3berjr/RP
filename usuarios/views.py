@@ -20,9 +20,42 @@ def login(request):
             login_django(request,user)
             return HttpResponse('Autenticado!')
         else:
-            return HttpResponse('E-mail ou senha inválidos!')
+            return HttpResponse('Email ou senha invalidos!')
 
 
 ################################################################################################################
 
+def cadastro(request):
+    if request.method=="GET":
+        return render(request, 'usuarios/cadastro.html')
+    else:
+        username=request.POST.get('email')
+        email=request.POST.get('email')
+        password=request.POST.get('senha')
+        first_name=request.POST.get('nome')
 
+        user=User.objects.filter(username=username).first()
+
+        if user:
+            return HttpResponse('usuarios já existente')
+        else:
+            user=User.objects.create_user(username=username, email=email, password=password, first_name=first_name)
+            user.save()
+
+            return HttpResponse('Cadastro realizado com sucesso!')
+
+
+################################################################################################################
+
+def home(request):
+    return render(request, 'usuarios/home.html')
+
+################################################################################################################
+
+def registrar(request):
+    return render(request, 'usuarios/registrar.html')
+
+################################################################################################################
+
+def visualizar(request):
+    return render(request, 'usuarios/visualizar.html')
